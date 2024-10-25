@@ -41,9 +41,15 @@ jobs:
         run: |
           echo "Test output:"
           cat result.log
-          echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
-          cat result.log >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          
+          if [ -s result.log ]; then
+            echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
+            cat result.log >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          else
+            echo "No test output found."
+            echo "TEST_RESULT=No tests were executed or output is empty." >> $GITHUB_ENV
+          fi
 
       - name: Comment PR with test results
         if: always() && github.event_name == 'pull_request'
