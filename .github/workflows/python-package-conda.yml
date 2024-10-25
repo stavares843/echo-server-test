@@ -34,7 +34,7 @@ jobs:
       - name: Run tests
         id: run_tests
         run: |
-          python3 -m unittest discover -s . -p "test_server.py" > result.log || true
+          python3 -m unittest discover -s . -p "test_server.py" > result.log 2>&1 || true
 
       - name: Read test output
         id: test_output
