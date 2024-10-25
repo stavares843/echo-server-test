@@ -30,11 +30,11 @@ class EchoHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         )
         self.wfile.write(response.encode('utf-8'))
 
-# Set up the server
-PORT = 8080
-Handler = EchoHTTPRequestHandler
-
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"Serving on port {PORT}")
+def run(server_class=http.server.HTTPServer, handler_class=EchoHTTPRequestHandler, port=8080):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    print(f"Serving on port {port}")
     httpd.serve_forever()
 
+if __name__ == "__main__":
+    run()
