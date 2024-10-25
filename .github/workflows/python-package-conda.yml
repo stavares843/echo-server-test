@@ -55,8 +55,10 @@ jobs:
       - name: Prepare Summary
         id: prepare_summary
         run: |
-          if [[ "$PASSED_TESTS" -eq "$TOTAL_TESTS" ]]; then
+          if [[ "$PASSED_TESTS" -eq "$TOTAL_TESTS" && "$TOTAL_TESTS" -gt 0 ]]; then
             echo "STATUS=All tests passed! ✅" >> $GITHUB_ENV
+          elif [[ "$TOTAL_TESTS" -eq 0 ]]; then
+            echo "STATUS=No tests were executed. ⚠️" >> $GITHUB_ENV
           else
             echo "STATUS=Some tests failed. ❌" >> $GITHUB_ENV
           fi
