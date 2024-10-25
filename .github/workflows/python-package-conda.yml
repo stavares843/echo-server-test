@@ -42,25 +42,9 @@ jobs:
           echo "🎉 Test output:"
           cat result.log
           
-          TOTAL_TESTS=$(grep -o 'test_' result.log | wc -l)
-          PASSED_TESTS=$(grep -o 'OK' result.log | wc -l)
-
           echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
           cat result.log >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          echo "TOTAL_TESTS=$TOTAL_TESTS" >> $GITHUB_ENV
-          echo "PASSED_TESTS=$PASSED_TESTS" >> $GITHUB_ENV
-
-      - name: Prepare Summary
-        id: prepare_summary
-        run: |
-          if [[ "$PASSED_TESTS" -eq "$TOTAL_TESTS" && "$TOTAL_TESTS" -gt 0 ]]; then
-            echo "STATUS=All tests passed! ✅" >> $GITHUB_ENV
-          elif [[ "$TOTAL_TESTS" -eq 0 ]]; then
-            echo "STATUS=No tests were executed. ⚠️" >> $GITHUB_ENV
-          else
-            echo "STATUS=Some tests failed. ❌" >> $GITHUB_ENV
-          fi
 
       - name: Comment PR with test results
         if: always() && github.event_name == 'pull_request'
@@ -71,9 +55,5 @@ jobs:
             ```
             ${{ env.TEST_RESULT }}
             ```
-            ### 🏁 Summary:
-            - **Total Tests Run**: ${{ env.TOTAL_TESTS }}
-            - **Passed**: ${{ env.PASSED_TESTS }} 🎊
-            - **Status**: ${{ env.STATUS }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
