@@ -42,9 +42,8 @@ jobs:
           echo "🎉 Test output:"
           cat result.log
           
-          # Count total tests and passed tests
-          TOTAL_TESTS=$(grep -o 'test_' result.log | wc -l) # Count all test methods
-          PASSED_TESTS=$(grep -c 'OK' result.log) # Count tests that passed
+          TOTAL_TESTS=$(grep -o 'test_' result.log | wc -l)
+          PASSED_TESTS=$(grep -o 'OK' result.log | wc -l)
 
           echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
           cat result.log >> $GITHUB_ENV
