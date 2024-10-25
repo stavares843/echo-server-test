@@ -10,6 +10,12 @@ on:
 
 jobs:
   test:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: write
+      issues: read
+      
     runs-on: macos-latest
 
     steps:
