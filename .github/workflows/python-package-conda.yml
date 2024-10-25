@@ -26,5 +26,25 @@ jobs:
           pip install requests
 
       - name: Run tests
+        id: run_tests
         run: |
-          python3 -m unittest discover -s . -p "test_server.py"
+          python3 -m unittest discover -s . -p "test_server.py" > result.log || true
+
+      - name: Read test output
+        id: test_output
+        run: |
+          echo "Test output:"
+          cat result.log
+          echo "::set-output name=result::$(cat result.log)"
+
+      - name: Comment PR with test results
+        if: always() && github.event_name == 'pull_request'
+        uses: mshick/add-pr-comment@v2.8.2
+        with:
+          message: |
+            ### Test Results
+            ```
+            ${{ steps.test_output.outputs.result }}
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
