@@ -25,7 +25,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5.3.0
         with:
-          python-version: '3.13' 
+          python-version: '3.13'
 
       - name: Install requests module to run the tests
         run: |
@@ -41,7 +41,9 @@ jobs:
         run: |
           echo "Test output:"
           cat result.log
-          echo "::set-output name=result::$(cat result.log)"
+          echo "result<<EOF" >> $GITHUB_ENV
+          cat result.log >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Comment PR with test results
         if: always() && github.event_name == 'pull_request'
@@ -50,7 +52,7 @@ jobs:
           message: |
             ### Test Results
             ```
-            ${{ steps.test_output.outputs.result }}
+            ${{ env.result }}
             ```
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
