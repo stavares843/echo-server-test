@@ -15,7 +15,7 @@ jobs:
       pull-requests: write
       contents: write
       issues: read
-      
+
     runs-on: macos-latest
 
     steps:
@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "Test output:"
           cat result.log
-          echo "result<<EOF" >> $GITHUB_ENV
+          echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
           cat result.log >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
@@ -52,7 +52,7 @@ jobs:
           message: |
             ### Test Results
             ```
-            ${{ env.result }}
+            ${{ env.TEST_RESULT }}
             ```
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
