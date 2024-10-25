@@ -39,15 +39,21 @@ jobs:
       - name: Read test output
         id: test_output
         run: |
-          echo "Test output:"
+          echo "🎉 Test output:"
           cat result.log
           
+          # Count total tests and passed tests
+          TOTAL_TESTS=$(grep -o 'test_' result.log | wc -l) # Count all test methods
+          PASSED_TESTS=$(grep -c 'OK' result.log) # Count tests that passed
+
           if [ -s result.log ]; then
-            echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
+            echo "📄 TEST_RESULT<<EOF" >> $GITHUB_ENV
             cat result.log >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
+            echo "TOTAL_TESTS=$TOTAL_TESTS" >> $GITHUB_ENV
+            echo "PASSED_TESTS=$PASSED_TESTS" >> $GITHUB_ENV
           else
-            echo "No test output found."
+            echo "❌ No test output found."
             echo "TEST_RESULT=No tests were executed or output is empty." >> $GITHUB_ENV
           fi
 
@@ -56,9 +62,13 @@ jobs:
         uses: mshick/add-pr-comment@v2.8.2
         with:
           message: |
-            ### Test Results
+            ### 🚦 Test Results
             ```
             ${{ env.TEST_RESULT }}
             ```
+            ### 🏁 Summary:
+            - **Total Tests Run**: ${{ env.TOTAL_TESTS }}
+            - **Passed**: ${{ env.PASSED_TESTS }} 🎊
+            - **Status**: ${{ env.PASSED_TESTS == env.TOTAL_TESTS && 'All tests passed! ✅' || 'Some tests failed. ❌' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
