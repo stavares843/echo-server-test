@@ -46,21 +46,16 @@ jobs:
           TOTAL_TESTS=$(grep -o 'test_' result.log | wc -l) # Count all test methods
           PASSED_TESTS=$(grep -c 'OK' result.log) # Count tests that passed
 
-          if [[ -s result.log ]]; then
-            echo "📄 TEST_RESULT<<EOF" >> $GITHUB_ENV
-            cat result.log >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-            echo "TOTAL_TESTS=$TOTAL_TESTS" >> $GITHUB_ENV
-            echo "PASSED_TESTS=$PASSED_TESTS" >> $GITHUB_ENV
-          else
-            echo "❌ No test output found."
-            echo "TEST_RESULT=No tests were executed or output is empty." >> $GITHUB_ENV
-          fi
+          echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
+          cat result.log >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "TOTAL_TESTS=$TOTAL_TESTS" >> $GITHUB_ENV
+          echo "PASSED_TESTS=$PASSED_TESTS" >> $GITHUB_ENV
 
       - name: Prepare Summary
         id: prepare_summary
         run: |
-          if [ "${{ env.PASSED_TESTS }}" -eq "${{ env.TOTAL_TESTS }}" ]; then
+          if [[ "$PASSED_TESTS" -eq "$TOTAL_TESTS" ]]; then
             echo "STATUS=All tests passed! ✅" >> $GITHUB_ENV
           else
             echo "STATUS=Some tests failed. ❌" >> $GITHUB_ENV
