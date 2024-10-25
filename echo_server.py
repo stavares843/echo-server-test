@@ -1,24 +1,24 @@
 import http.server
 import socketserver
 
-# Define the request handler class
+# define the request handler class
 class EchoHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        # Echo the request path
+        # echo the request path
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
 
-        # Write the echo message to the response body
+        # add echo message to the response body
         response = f"Received GET request:\nPath: {self.path}\n\nHeaders:\n{self.headers}"
         self.wfile.write(response.encode('utf-8'))
 
     def do_POST(self):
-        # Read the request body data
+        # read request body data
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
 
-        # Echo the request path, headers, and body
+        # echo request path, headers, and body
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
