@@ -88,15 +88,7 @@ jobs:
       - name: Stop Echo Server
         run: |
           taskkill /IM echo_server.exe /F || true
-
-      - name: Check result.log content
-        run: |
-          if [ -f result.log ]; then
-            echo "Contents of result.log:"
-            cat result.log
-          else
-            echo "result.log does not exist."
-          fi
+          
       - name: Run tests on Source Code
         id: run_tests_src
         run: |
@@ -114,6 +106,17 @@ jobs:
           echo "SOURCE_CODE_TEST_RESULT<<EOF" >> $GITHUB_ENV
           echo "$result_src" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
+      - name: Check result.log content
+        shell: pwsh
+        run: |
+         if (Test-Path result.log) {
+            Write-Host "Contents of result.log:"
+            Get-Content result.log
+          } else {
+            Write-Host "result.log does not exist."
+          }
+          fi
 
       - name: Debug Environment Variables
         run: |
