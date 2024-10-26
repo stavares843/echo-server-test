@@ -8,7 +8,7 @@ This adds a server that listens for incoming requests. Whenever we send it an HT
 
 # OS used: Windows 11
 
-# Requirements to run the echo_server.py locally:
+# Requirements to run the `echo_server.py` locally:
 - have Python3 installed
 - cd to this repo
 - execute `python3 echo_server.py`
