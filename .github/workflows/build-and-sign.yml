@@ -10,6 +10,12 @@ on:
 
 jobs:
   build-and-sign:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: write
+      issues: read
+      
     runs-on: windows-latest
 
     steps:
