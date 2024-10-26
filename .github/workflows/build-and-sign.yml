@@ -79,26 +79,49 @@ jobs:
         run: |
           taskkill /IM echo_server.exe /F || true
 
-      - name: Read test output
+      - name: Read test output for Executable
         id: test_output_exe
         run: |
-          echo "🎉 Test output:"
+          echo "🎉 Test output for Executable:"
           cat result.log
           
-          echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
+          echo "TEST_RESULT_EXE<<EOF" >> $GITHUB_ENV
           cat result.log >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Run tests on Source Code
+        id: run_tests
+        run: |
+          python3 -m unittest discover -s . -p "test_server.py" > result_source.log 2>&1 || true
+
+      - name: Read test output for Source Code
+        id: test_output_src
+        run: |
+          echo "🎉 Test output for Source Code:"
+          cat result_source.log
+          
+          echo "TEST_RESULT_SRC<<EOF" >> $GITHUB_ENV
+          cat result_source.log >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Comment PR with test results
         if: always() && github.event_name == 'pull_request'
-        uses: thollander/actions-comment-pull-request@v3
+        uses: mshick/add-pr-comment@v2.8.2
         with:
-         message: |
-            ### 🚦 Test Results on Exe
+          message: |
+            ### 🚦 Test Results
+            **Executable Test Results:**
             ```
-            ${{ steps.test_output_exe.outputs.body }}
+            ${{ env.TEST_RESULT_EXE }}
             ```
 
+            **Source Code Test Results:**
+            ```
+            ${{ env.TEST_RESULT_SRC }}
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Post Download Links for Artifacts
         if: success()
         uses: actions/github-script@v7.0.1
