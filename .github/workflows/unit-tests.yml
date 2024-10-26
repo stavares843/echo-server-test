@@ -10,7 +10,12 @@ on:
 
 jobs:
   test:
-    permissions: write-all
+    permissions: 
+      checks: write
+      pull-requests: write
+      contents: write
+      issues: read
+      
     runs-on: macos-latest
     steps:
       - name: Checkout code
