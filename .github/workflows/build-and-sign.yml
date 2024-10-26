@@ -22,14 +22,10 @@ jobs:
         with:
           python-version: '3'
 
-      - name: Install PyInstaller
+      - name: Install PyInstaller and requests
         run: |
-          pip install pyinstaller
+          pip install pyinstaller requests
 
-      - name: Install requests
-        run: |
-          pip install requests
-          
       - name: Create Working Directory
         run: |
           mkdir build
@@ -72,44 +68,30 @@ jobs:
           Start-Sleep -Seconds 5  # wait 5 seconds for the server to start
 
       - name: Run Tests on Executable
+        id: run_tests_exe
         run: |
           python test_server_exe.py > result.log 2>&1 || true
+          echo "🎉 Executable Test output:"
+          cat result.log
+          
+          echo "EXECUTABLE_TEST_RESULT<<EOF" >> $GITHUB_ENV
+          cat result.log >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Stop Echo Server
         run: |
           taskkill /IM echo_server.exe /F || true
 
-      - name: Read test output for Executable
-        id: test_output_exe
-        run: |
-          echo "🎉 Test output for Executable:"
-          cat result.log
-          
-          echo "TEST_RESULT_EXE<<EOF" >> $GITHUB_ENV
-          cat result.log >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
       - name: Run tests on Source Code
-        id: run_tests
+        id: run_tests_src
         run: |
           python3 -m unittest discover -s . -p "test_server.py" > result_source.log 2>&1 || true
-
-      - name: Read test output for Source Code
-        id: test_output_src
-        run: |
-          echo "🎉 Test output for Source Code:"
+          echo "🎉 Source Code Test output:"
           cat result_source.log
           
-          echo "TEST_RESULT_SRC<<EOF" >> $GITHUB_ENV
+          echo "SOURCE_CODE_TEST_RESULT<<EOF" >> $GITHUB_ENV
           cat result_source.log >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-
-      - name: Debug Environment Variables
-        run: |
-          echo "Executable Test Result:"
-          echo "${{ env.TEST_RESULT_EXE }}"
-          echo "Source Code Test Result:"
-          echo "${{ env.TEST_RESULT_SRC }}"
 
       - name: Comment PR with test results
         if: always() && github.event_name == 'pull_request'
@@ -119,12 +101,12 @@ jobs:
             ### 🚦 Test Results
             **Executable Test Results:**
             ```
-            ${{ env.TEST_RESULT_EXE }}
+            ${{ env.EXECUTABLE_TEST_RESULT }}
             ```
 
             **Source Code Test Results:**
             ```
-            ${{ env.TEST_RESULT_SRC }}
+            ${{ env.SOURCE_CODE_TEST_RESULT }}
             ```
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
