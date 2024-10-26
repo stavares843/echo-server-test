@@ -1,0 +1,62 @@
+name: Build and Sign Windows App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3'
+
+      - name: Install PyInstaller
+        run: |
+          pip install pyinstaller
+
+      - name: Create Working Directory
+        run: |
+          mkdir build
+          cd build
+          echo "Working directory created."
+
+      - name: Build the Executable
+        run: |
+          cd build
+          pyinstaller --onefile ../echo_server.py
+
+      - name: List Files in Build Directory
+        run: |
+          cd build
+          dir
+
+      - name: Prepare Files for Signing
+        run: |
+          mkdir files
+          move build\dist\echo_server.exe files
+
+      - name: Sign App
+        uses: dlemstra/code-sign-action@v1
+        with:
+            certificate: '${{ secrets.PFX_CERTIFICATE }}'
+            password: '${{ secrets.CERT_PASSWORD }}'
+            folder: 'files'
+            recursive: true
+            description: 'EchoServerApp'
+
+      - name: Upload Signed Executable as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-echo-server
+          path: files/echo_server.exe
