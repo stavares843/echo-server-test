@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3'
 
-      - name: Install PyInstaller and requests
+      - name: Install pyinstaller and requests
         run: |
           pip install pyinstaller requests
 
@@ -72,7 +72,7 @@ jobs:
         run: |
           python test_server_exe.py > result.log 2>&1 || true
           echo "🎉 Executable Test output:"
-          cat result.log
+          cat result.log || echo "No output from result.log"
           
           echo "EXECUTABLE_TEST_RESULT<<EOF" >> $GITHUB_ENV
           cat result.log >> $GITHUB_ENV
@@ -87,11 +87,18 @@ jobs:
         run: |
           python3 -m unittest discover -s . -p "test_server.py" > result_source.log 2>&1 || true
           echo "🎉 Source Code Test output:"
-          cat result_source.log
+          cat result_source.log || echo "No output from result_source.log"
           
           echo "SOURCE_CODE_TEST_RESULT<<EOF" >> $GITHUB_ENV
           cat result_source.log >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
+      - name: Debug Environment Variables
+        run: |
+          echo "Executable Test Result:"
+          echo "${{ env.EXECUTABLE_TEST_RESULT }}"
+          echo "Source Code Test Result:"
+          echo "${{ env.SOURCE_CODE_TEST_RESULT }}"
 
       - name: Comment PR with test results
         if: always() && github.event_name == 'pull_request'
