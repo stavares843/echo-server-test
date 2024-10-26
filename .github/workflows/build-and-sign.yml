@@ -64,12 +64,12 @@ jobs:
 
       - name: Start Echo Server
         run: |
-          Start-Process -FilePath files\echo_server.exe -PassThru | Out-Null
-          timeout /t 5
+          Start-Process -FilePath 'files\echo_server.exe' -PassThru | Out-Null
+          Start-Sleep -Seconds 5  # wait 5 seconds for the server to start
 
       - name: Run Tests on Executable
         run: |
-          python -m unittest discover -s tests -p "*.py" > result.log 2>&1 || true
+          python test_server_exe.py > result.log 2>&1 || true
 
       - name: Stop Echo Server
         run: |
