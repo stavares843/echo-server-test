@@ -98,7 +98,6 @@ jobs:
             ```
             ${{ env.TEST_RESULT }}
             ```
-            pr_number: ${{ github.event.pull_request.number }}
 
       - name: Post Download Links for Artifacts
         if: success()
