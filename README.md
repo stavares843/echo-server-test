@@ -1,6 +1,8 @@
 # echo-server-test
 
 
+[![Unit Tests](https://github.com/stavares843/echo-server-test/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/stavares843/echo-server-test/actions/workflows/unit-tests.yml)
+
 This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back everything you sent it — your request path, headers, and so forth.
 
 The server is written in Python and listens on port 8080.
