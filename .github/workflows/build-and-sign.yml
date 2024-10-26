@@ -75,6 +75,28 @@ jobs:
         run: |
           taskkill /IM echo_server.exe /F || true
 
+      - name: Read test output
+        id: test_output_exe
+        run: |
+          echo "🎉 Test output:"
+          cat result.log
+          
+          echo "TEST_RESULT<<EOF" >> $GITHUB_ENV
+          cat result.log >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Comment PR with test results
+        if: always() && github.event_name == 'pull_request'
+        uses: mshick/add-pr-comment@v2.8.2
+        with:
+          message: |
+            ### 🚦 Test Results on Exe
+            ```
+            ${{ env.TEST_RESULT }}
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Post Download Links for Artifacts
         if: success()
         uses: actions/github-script@v7.0.1
