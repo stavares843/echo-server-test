@@ -96,7 +96,7 @@ jobs:
          message: |
             ### 🚦 Test Results on Exe
             ```
-            ${{ env.TEST_RESULT }}
+            ${{ steps.test_output_exe.outputs.body }}
             ```
 
       - name: Post Download Links for Artifacts
