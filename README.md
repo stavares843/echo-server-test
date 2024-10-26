@@ -48,3 +48,18 @@ Example
 <img width="779" alt="Captura de ecrã 2024-10-26, às 17 32 23" src="https://github.com/user-attachments/assets/b0e2dbed-9662-470c-869d-9e4a59468766">
 
 <img width="867" alt="Captura de ecrã 2024-10-26, às 17 33 25" src="https://github.com/user-attachments/assets/ee701dd4-dd15-435b-b017-fe0805725f7e">
+
+
+
+## Tests
+
+We have 2 tests - the ones that are performed (`test_server.py`) on the source code (`echo_server.py`) and the ones (`test_server_exe.py`) that are performed directly on the executable 
+
+In the below video, you notice first the .exe is not running so trying to execute the tests will fail as expected
+
+After starting the process and running the tests, works properly
+
+
+https://github.com/user-attachments/assets/35dfe65c-216c-4bec-bf95-7ffb42c20086
+
+
