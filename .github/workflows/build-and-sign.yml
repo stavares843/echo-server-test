@@ -57,7 +57,3 @@ jobs:
              file1
              file2
             description: 'EchoServerApp'
-
-      - name: Clean up
-        run: |
-          del code_signing_certificate.pfx
