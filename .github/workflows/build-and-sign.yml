@@ -104,6 +104,13 @@ jobs:
           cat result_source.log >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
+      - name: Debug Environment Variables
+        run: |
+          echo "Executable Test Result:"
+          echo "${{ env.TEST_RESULT_EXE }}"
+          echo "Source Code Test Result:"
+          echo "${{ env.TEST_RESULT_SRC }}"
+
       - name: Comment PR with test results
         if: always() && github.event_name == 'pull_request'
         uses: mshick/add-pr-comment@v2.8.2
