@@ -1,0 +1,47 @@
+name: Build and Sign Windows App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3'
+
+      - name: Install PyInstaller
+        run: |
+          pip install pyinstaller
+
+      - name: Build the Executable
+        run: |
+          pyinstaller --onefile echo_server.py
+
+      - name: Decode and Save the PFX Certificate
+        env:
+          PFX_CERTIFICATE: ${{ secrets.PFX_CERTIFICATE }}
+        run: |
+          echo $PFX_CERTIFICATE | base64 -d > code_signing_certificate.pfx
+
+      - name: Sign Executable
+        env:
+          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+        run: |
+          certutil -importPFX code_signing_certificate.pfx /password $CERT_PASSWORD
+          signtool sign /f code_signing_certificate.pfx /p $CERT_PASSWORD /tr http://timestamp.digicert.com /td sha256 /fd sha256 dist\echo_server.exe
+
+      - name: Clean up Certificate
+        run: |
+          del code_signing_certificate.pfx
