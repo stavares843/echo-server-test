@@ -10,14 +10,8 @@ on:
 
 jobs:
   test:
-    permissions:
-      checks: write
-      pull-requests: write
-      contents: write
-      issues: read
-
+    permissions: write-all
     runs-on: macos-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
