@@ -70,78 +70,11 @@ jobs:
       - name: Run Tests on Executable
         id: run_tests_exe
         run: |
-          # run the tests and capture the output
           python test_server_exe.py > result.log 2>&1 || true
-          
-          # store the content of the log file in a var
-          $result = Get-Content result.log | Out-String
-          
-          # display the test output in the console
-          echo "🎉 Executable Test output:"
-          echo "$result" 
-
-          # write the result to the env var
-          echo "EXECUTABLE_TEST_RESULT<<EOF" >> $GITHUB_ENV
-          echo "$result" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
 
       - name: Stop Echo Server
         run: |
           taskkill /IM echo_server.exe /F || true
-          
-      - name: Run tests on Source Code
-        id: run_tests_src
-        run: |
-          # run the tests and capture the output
-          python3 -m unittest discover -s . -p "test_server.py" > result_source.log 2>&1 || true
-          
-          # store the content of the log file in a var
-          $result = Get-Content result.log | Out-String
-
-          # display the test output in the console
-          echo "🎉 Source Code Test output:"
-          echo "$result_src" 
-
-          # write the result to the env var
-          echo "SOURCE_CODE_TEST_RESULT<<EOF" >> $GITHUB_ENV
-          echo "$result_src" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-      - name: Check result.log content
-        shell: pwsh
-        run: |
-         if (Test-Path result.log) {
-            Write-Host "Contents of result.log:"
-            Get-Content result.log
-          } else {
-            Write-Host "result.log does not exist."
-          }
-          fi
-
-      - name: Debug Environment Variables
-        run: |
-          echo "Executable Test Result:"
-          echo "${{ env.EXECUTABLE_TEST_RESULT }}"
-          echo "Source Code Test Result:"
-          echo "${{ env.SOURCE_CODE_TEST_RESULT }}"
-
-      - name: Comment PR with test results
-        if: always() && github.event_name == 'pull_request'
-        uses: mshick/add-pr-comment@v2.8.2
-        with:
-          message: |
-            ### 🚦 Test Results
-            **Executable Test Results:**
-            ```
-            ${{ env.EXECUTABLE_TEST_RESULT }}
-            ```
-
-            **Source Code Test Results:**
-            ```
-            ${{ env.SOURCE_CODE_TEST_RESULT }}
-            ```
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Post Download Links for Artifacts
         if: success()
