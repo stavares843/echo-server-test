@@ -53,7 +53,10 @@ jobs:
             password: '${{ secrets.CERT_PASSWORD }}'
             folder: 'files'
             recursive: true
-            files: |
-             file1
-             file2
             description: 'EchoServerApp'
+
+      - name: Upload Signed Executable as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-echo-server
+          path: files/echo_server.exe
