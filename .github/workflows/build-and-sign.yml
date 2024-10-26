@@ -25,27 +25,37 @@ jobs:
         run: |
           pip install pyinstaller
 
+      - name: Create Working Directory
+        run: |
+          mkdir build
+          cd build
+          echo "Working directory created."
+
       - name: Build the Executable
         run: |
-          pyinstaller --onefile echo_server.py
-          
-      - name: Install Windows SDK
-        run: |
-          choco install windows-sdk-10.0
+          cd build
+          pyinstaller --onefile ../echo_server.py
 
-      - name: Decode and Save the PFX Certificate
-        env:
-          PFX_CERTIFICATE: ${{ secrets.PFX_CERTIFICATE }}
+      - name: List Files in Build Directory
         run: |
-          echo $PFX_CERTIFICATE | base64 -d > code_signing_certificate.pfx
+          cd build
+          dir
 
-      - name: Sign Executable
-        env:
-          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+      - name: Prepare Files for Signing
         run: |
-          certutil -importPFX code_signing_certificate.pfx /password $CERT_PASSWORD
-          signtool sign /f code_signing_certificate.pfx /p $CERT_PASSWORD /tr http://timestamp.digicert.com /td sha256 /fd sha256 dist\echo_server.exe
+          mkdir files
+          move build\dist\echo_server.exe files
 
-      - name: Clean up Certificate
+      - name: Code Signing
+        uses: skymatic/code-sign-action@v3
+        with:
+          certificate: '${{ secrets.PFX_CERTIFICATE }}'
+          password: '${{ secrets.CERT_PASSWORD }}'
+          description: 'Echo Server App'
+          timestampUrl: 'http://timestamp.digicert.com'
+          folder: 'files'
+          recursive: true
+
+      - name: Clean up
         run: |
           del code_signing_certificate.pfx
