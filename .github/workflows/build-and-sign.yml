@@ -89,6 +89,14 @@ jobs:
         run: |
           taskkill /IM echo_server.exe /F || true
 
+      - name: Check result.log content
+        run: |
+          if [ -f result.log ]; then
+            echo "Contents of result.log:"
+            cat result.log
+          else
+            echo "result.log does not exist."
+          fi
       - name: Run tests on Source Code
         id: run_tests_src
         run: |
