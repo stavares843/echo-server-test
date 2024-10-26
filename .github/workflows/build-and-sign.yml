@@ -70,12 +70,19 @@ jobs:
       - name: Run Tests on Executable
         id: run_tests_exe
         run: |
+          # run the tests and capture the output
           python test_server_exe.py > result.log 2>&1 || true
-          echo "🎉 Executable Test output:"
-          cat result.log || echo "No output from result.log"
           
+          # store the content of the log file in a var
+          result=$(Get-Content result.log | Out-String)
+          
+          # display the test output in the console
+          echo "🎉 Executable Test output:"
+          echo "$result"  # Outputs the content to the workflow log
+
+          # write the result to the env var
           echo "EXECUTABLE_TEST_RESULT<<EOF" >> $GITHUB_ENV
-          cat result.log >> $GITHUB_ENV
+          echo "$result" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Stop Echo Server
@@ -85,12 +92,19 @@ jobs:
       - name: Run tests on Source Code
         id: run_tests_src
         run: |
+          # run the tests and capture the output
           python3 -m unittest discover -s . -p "test_server.py" > result_source.log 2>&1 || true
-          echo "🎉 Source Code Test output:"
-          cat result_source.log || echo "No output from result_source.log"
           
+          # store the content of the log file in a var
+          result_src=$(Get-Content result_source.log | Out-String)
+          
+          # display the test output in the console
+          echo "🎉 Source Code Test output:"
+          echo "$result_src" 
+
+          # write the result to the env var
           echo "SOURCE_CODE_TEST_RESULT<<EOF" >> $GITHUB_ENV
-          cat result_source.log >> $GITHUB_ENV
+          echo "$result_src" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Debug Environment Variables
