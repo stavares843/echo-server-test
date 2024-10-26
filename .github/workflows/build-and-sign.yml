@@ -62,12 +62,18 @@ jobs:
           name: signed-echo-server
           path: files/echo_server.exe
 
-      - name: Run Tests on the .exe
+      - name: Start Echo Server
         run: |
-          start /B files\echo_server.exe
-          timeout /t 5  # wait a few seconds for the server to start
+          Start-Process -FilePath files\echo_server.exe -PassThru | Out-Null
+          timeout /t 5
+
+      - name: Run Tests on Executable
+        run: |
           python -m unittest discover -s tests -p "*.py" > result.log 2>&1 || true
-          taskkill /IM echo_server.exe /F  # stop the server after tests are done
+
+      - name: Stop Echo Server
+        run: |
+          taskkill /IM echo_server.exe /F || true
 
       - name: Post Download Links for Artifacts
         if: success()
