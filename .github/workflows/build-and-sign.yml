@@ -10,6 +10,7 @@ on:
 
 jobs:
   build-and-sign:
+    permissions: write-all 
     runs-on: windows-latest
 
     steps:
@@ -49,14 +50,58 @@ jobs:
       - name: Sign App
         uses: dlemstra/code-sign-action@v1
         with:
-            certificate: '${{ secrets.PFX_CERTIFICATE }}'
-            password: '${{ secrets.CERT_PASSWORD }}'
-            folder: 'files'
-            recursive: true
-            description: 'EchoServerApp'
+          certificate: '${{ secrets.PFX_CERTIFICATE }}'
+          password: '${{ secrets.CERT_PASSWORD }}'
+          folder: 'files'
+          recursive: true
+          description: 'EchoServerApp'
 
       - name: Upload Signed Executable as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: signed-echo-server
           path: files/echo_server.exe
+
+      - name: Post Download Links for Artifacts
+        if: success()
+        uses: actions/github-script@v7.0.1
+        with:
+          script: |
+            async function upsertComment(owner, repo, issue_number, purpose, body) {
+              const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number });
+              const marker = `<!-- bot: ${purpose} -->`;
+              body = marker + "\n" + body;
+              const existing = comments.filter((c) => c.body.includes(marker));
+              if (existing.length > 0) {
+                const last = existing[existing.length - 1];
+                console.info(`Updating comment ${last.id}`);
+                await github.rest.issues.updateComment({
+                  owner, 
+                  repo,
+                  body,
+                  comment_id: last.id,
+                });
+              } else {
+                console.info(`Creating a comment in issue / PR #${issue_number}`);
+                await github.rest.issues.createComment({ issue_number, body, owner, repo });
+              }
+            }
+            const { owner, repo } = context.repo;
+            const run_id = ${{ github.run_id }};
+            const pull_requests = ${{ toJSON(github.event.pull_request) }};
+            if (!pull_requests) {
+              return core.error("This workflow doesn't match any pull requests!");
+            }
+            const artifacts = await github.paginate(
+              github.rest.actions.listWorkflowRunArtifacts, 
+              { owner, repo, run_id }
+            );
+            if (!artifacts.length) {
+              return core.error(`No artifacts found`);
+            }
+            let body = `Download the signed Windows app installer for this pull request:\n`;
+            for (const art of artifacts) {
+              body += `\n* [${art.name}.zip](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)`;
+            }
+            console.info("Review thread message body:", body);
+            await upsertComment(owner, repo, pull_requests.number, "nightly-link", body);
