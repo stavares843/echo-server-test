@@ -46,15 +46,17 @@ jobs:
           mkdir files
           move build\dist\echo_server.exe files
 
-      - name: Code Signing
-        uses: skymatic/code-sign-action@v3
+      - name: Sign App
+        uses: dlemstra/code-sign-action@v1
         with:
-          certificate: '${{ secrets.PFX_CERTIFICATE }}'
-          password: '${{ secrets.CERT_PASSWORD }}'
-          description: 'Echo Server App'
-          timestampUrl: 'http://timestamp.digicert.com'
-          folder: 'files'
-          recursive: true
+            certificate: '${{ secrets.PFX_CERTIFICATE }}'
+            password: '${{ secrets.CERT_PASSWORD }}'
+            folder: 'files'
+            recursive: true
+            files: |
+             file1
+             file2
+            description: 'EchoServerApp'
 
       - name: Clean up
         run: |
