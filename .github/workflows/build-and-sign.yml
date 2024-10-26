@@ -26,6 +26,10 @@ jobs:
         run: |
           pip install pyinstaller
 
+      - name: Install requests
+        run: |
+          pip install requests
+          
       - name: Create Working Directory
         run: |
           mkdir build
