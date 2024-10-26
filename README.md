@@ -4,7 +4,7 @@
 
 This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back everything you sent it — your request path, headers, and so forth.
 
-OS used: Windows 11
+# OS used: Windows 11
 
 # Requirements to run the echo_server.py locally:
 - have Python3 installed, cd to this repo and execute `python3 echo_server.py`
