@@ -10,7 +10,7 @@ on:
       - main
       
 jobs:
-  build-and-sign:
+  build-sign-and-run-tests:
     permissions: write-all 
     runs-on: windows-latest
 
