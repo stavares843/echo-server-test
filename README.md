@@ -2,7 +2,7 @@
 
 [![Unit Tests](https://github.com/stavares843/echo-server-test/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/stavares843/echo-server-test/actions/workflows/unit-tests.yml)
 
-[![Build and Sign Windows App](https://github.com/stavares843/echo-server-test/actions/workflows/build-and-sign.yml/badge.svg)](https://github.com/stavares843/echo-server-test/actions/workflows/build-and-sign.yml)
+[![Build, Sign Windows App and Run Tests](https://github.com/stavares843/echo-server-test/actions/workflows/windows-app.yml/badge.svg)](https://github.com/stavares843/echo-server-test/actions/workflows/windows-app.yml)
 
 This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back the request path, headers, and so forth.
 
