@@ -1,4 +1,4 @@
-name: Build and Sign Windows App
+name: Build, Sign Windows App and Run Tests
 
 on:
   push:
