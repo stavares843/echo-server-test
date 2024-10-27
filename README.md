@@ -6,7 +6,7 @@
 
 This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back everything you sent it — your request path, headers, and so forth.
 
-# OS used: Windows 11
+# OS used: macOS 13
 
 # Requirements to run the `echo_server.py` locally:
 - have Python3 installed
@@ -19,12 +19,13 @@ This adds a server that listens for incoming requests. Whenever we send it an HT
 - cd to this repo
 - execute `python3 -m unittest discover -s . -p "test_server.py"`
 
+# OS used: Windows 11
+
 # Requirements to compile the binary
 - have Python3 installed
 - install the `installer` module - `pip install pyinstaller`
 - cd to this repo
 - execute `pyinstaller --onefile echo_server.py` - this will this will create a `dist` folder where you find the `echo_server.exe`
-
 
 The server is written in Python and listens on port 8080.
 
