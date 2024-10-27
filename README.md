@@ -8,24 +8,17 @@ This adds a server that listens for incoming requests. Whenever we send it an HT
 
 # OS used: macOS 13
 
-# Requirements to run the `echo_server.py` locally:
+# Requirements to run the `echo_server.py` locally: 
 - have Python3 installed
 - cd to this repo
 - execute `python3 echo_server.py`
 
-# Requirements to run the tests locally:
-- have Python3 installed
-- have `requests` module - `pip install requests`
-- cd to this repo
-- execute `python3 -m unittest discover -s . -p "test_server.py"`
 
-# OS used: Windows 11
+If you wanna use Windows, you can just double-click on the echo_server.py instead.
 
-# Requirements to compile the binary
-- have Python3 installed
-- install the `installer` module - `pip install pyinstaller`
-- cd to this repo
-- execute `pyinstaller --onefile echo_server.py` - this will this will create a `dist` folder where you find the `echo_server.exe`
+
+https://github.com/user-attachments/assets/5afa235d-6564-43f0-bcee-f31441e71d94
+
 
 The server is written in Python and listens on port 8080.
 
@@ -33,11 +26,7 @@ Requests:
 - GET request, it echoes back the requested path and the headers.
 - POST request, it echoes back any data additional to the headers.
 
-How to use:
-- clone repo
-- go to repo
-- go to this branch
-- run `python3 echo_server.py`
+
 
 Once it’s running, you can send requests to it, like typing http://localhost:8080/test in the browser or executing a curl to test it.
 
@@ -52,14 +41,38 @@ Example
 
 
 
+https://github.com/user-attachments/assets/ce3b2b29-43ec-4fc2-9362-126292dd5069
+
+
+
+# OS used: Windows 11
+
+# Requirements to compile the binary
+- have Python3 installed
+- install the `installer` module - `pip install pyinstaller`
+- cd to this repo
+- execute `pyinstaller --onefile echo_server.py` - this will this will create a `dist` folder where you find the `echo_server.exe`
+
+
 ## Tests
 
 We have 2 tests - the ones that are performed (`test_server.py`) on the source code (`echo_server.py`) and the ones (`test_server_exe.py`) that are performed directly on the executable 
 
+# Requirements to run the tests locally on the source code: (macOS)
+- have Python3 installed
+- have `requests` module - `pip install requests`
+- cd to this repo
+- execute `python3 -m unittest discover -s . -p "test_server.py"`
+
+
+# Requirements to run the tests locally on the executable itself: (windows 11)
+- cd to this repo
+- execute the following command: `start-process echo_server` (this repo already has a signed executable with this name)
+- execute the following command: `python test_server_exe.py`
+
 In the below video, you notice first the .exe is not running so trying to execute the tests will fail as expected
 
 After starting the process and running the tests, works properly 🎉
-
 
 https://github.com/user-attachments/assets/35dfe65c-216c-4bec-bf95-7ffb42c20086
 
