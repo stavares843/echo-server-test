@@ -4,9 +4,9 @@
 
 [![Build and Sign Windows App](https://github.com/stavares843/echo-server-test/actions/workflows/build-and-sign.yml/badge.svg)](https://github.com/stavares843/echo-server-test/actions/workflows/build-and-sign.yml)
 
-This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back everything you sent it — your request path, headers, and so forth.
+This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back the request path, headers, and so forth.
 
-# OS used: macOS 13
+# OS used: macOS (I used macOS 13)
 
 # Requirements to run the `echo_server.py` locally: 
 - have Python3 installed
@@ -14,7 +14,7 @@ This adds a server that listens for incoming requests. Whenever we send it an HT
 - execute `python3 echo_server.py`
 
 
-If you wanna use Windows, you can just double-click on the echo_server.py instead.
+If you wanna use Windows, you can just double-click on the echo_server.py instead. I used Windows 11.
 
 
 https://github.com/user-attachments/assets/5afa235d-6564-43f0-bcee-f31441e71d94
@@ -25,7 +25,6 @@ The server is written in Python and listens on port 8080.
 Requests:
 - GET request, it echoes back the requested path and the headers.
 - POST request, it echoes back any data additional to the headers.
-
 
 
 Once it’s running, you can send requests to it, like typing http://localhost:8080/test in the browser or executing a curl to test it.
@@ -58,14 +57,14 @@ https://github.com/user-attachments/assets/ce3b2b29-43ec-4fc2-9362-126292dd5069
 
 We have 2 tests - the ones that are performed (`test_server.py`) on the source code (`echo_server.py`) and the ones (`test_server_exe.py`) that are performed directly on the executable 
 
-# Requirements to run the tests locally on the source code: (macOS)
+# Requirements to run the tests locally on the source code: (macOS - I used macOS 13)
 - have Python3 installed
 - have `requests` module - `pip install requests`
 - cd to this repo
 - execute `python3 -m unittest discover -s . -p "test_server.py"`
 
 
-# Requirements to run the tests locally on the executable itself: (windows 11)
+# Requirements to run the tests locally on the executable itself: (Windows 11)
 - cd to this repo
 - execute the following command: `start-process echo_server` (this repo already has a signed executable with this name)
 - execute the following command: `python test_server_exe.py`
