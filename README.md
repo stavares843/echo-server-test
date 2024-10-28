@@ -14,7 +14,7 @@ This adds a server that listens for incoming requests. Whenever we send it an HT
 - execute `python3 echo_server.py`
 
 
-If you wanna use Windows, you can just double-click on the echo_server.py instead. I used Windows 11.
+If you wanna use Windows, you can just double-click on the `echo_server.py` instead. I used Windows 11.
 
 
 https://github.com/user-attachments/assets/5afa235d-6564-43f0-bcee-f31441e71d94
