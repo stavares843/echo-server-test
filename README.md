@@ -6,7 +6,7 @@
 
 This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back the request path, headers, and so forth.
 
-# OS used: macOS (I used macOS 13)
+# OS used: macOS
 
 # Requirements to run the `echo_server.py` locally: 
 - have Python3 installed
