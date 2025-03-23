@@ -6,9 +6,9 @@
 
 This adds a server that listens for incoming requests. Whenever we send it an HTTP request, will respond by sending back the request path, headers, and so forth.
 
-# OS used: macOS
+# macOS
 
-# Requirements to run the `echo_server.py` locally: 
+## Requirements to run the `echo_server.py` locally: 
 - have Python3 installed
 - cd to this repo
 - execute `python3 echo_server.py`
@@ -44,9 +44,9 @@ https://github.com/user-attachments/assets/ce3b2b29-43ec-4fc2-9362-126292dd5069
 
 
 
-# OS used: Windows 11
+# Windows
 
-# Requirements to compile the binary
+## Requirements to compile the binary
 - have Python3 installed
 - install the `installer` module - `pip install pyinstaller`
 - cd to this repo
@@ -57,14 +57,14 @@ https://github.com/user-attachments/assets/ce3b2b29-43ec-4fc2-9362-126292dd5069
 
 We have 2 tests - the ones that are performed (`test_server.py`) on the source code (`echo_server.py`) and the ones (`test_server_exe.py`) that are performed directly on the executable 
 
-# Requirements to run the tests locally on the source code: (macOS - I used macOS 13)
+## Requirements to run the tests locally on the source code: (macOS - I used macOS 13)
 - have Python3 installed
 - have `requests` module - `pip install requests`
 - cd to this repo
 - execute `python3 -m unittest discover -s . -p "test_server.py"`
 
 
-# Requirements to run the tests locally on the executable itself: (Windows 11)
+## Requirements to run the tests locally on the executable itself: (Windows 11)
 - cd to this repo
 - execute the following command: `start-process echo_server` (this repo already has a signed executable with this name)
 - execute the following command: `python test_server_exe.py`
